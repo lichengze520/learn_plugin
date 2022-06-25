@@ -21,8 +21,8 @@
     }
 
     div {
-      display: flex;
       width: 100%;
+      display: flex;
       flex-direction: column;
     }
 
@@ -33,7 +33,6 @@
     }
 
     .slider .slider-wrapper {
-      display: flex;
       position: absolute;
       height: 100%;
       width: 150rem;
@@ -103,13 +102,12 @@
         distanceX = 0,
         isMove = false
       const init = () => {
-        oSlider.addEventListener('touchstart', handleStart, false)
-        oSlider.addEventListener('touchmove', handleMove, false)
-        oSlider.addEventListener('touchend', handleEnd, false)
+        oSliderWrapper.addEventListener('touchstart', handleStart, false)
+        oSliderWrapper.addEventListener('touchmove', handleMove, false)
+        oSliderWrapper.addEventListener('touchend', handleEnd, false)
       }
 
       function handleStart(e) {
-        console.log(e);
         startX = e.touches[0].clientX
       }
 
@@ -141,8 +139,8 @@
       }
 
       function setTranslateX(translateX) {
-        oSlider.style.transition = 'all .1s'
-        oSlider.style.transform = `translateX(${translateX}px)`
+        oSliderWrapper.style.transition = 'all .1s'
+        oSliderWrapper.style.transform = `translateX(${translateX}px)`
       }
       init()
     })(document)
