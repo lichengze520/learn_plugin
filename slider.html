@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>移动端全屏滑动</title>
+  <script>
+    document.documentElement.style.fontSize = document.documentElement.clientWidth / 37.5 + 'px'
+  </script>
+  <style>
+    body {
+      margin: 0;
+    }
+
+    html,
+    body,
+    .container {
+      height: 100%;
+    }
+
+    div {
+      display: flex;
+      width: 100%;
+      flex-direction: column;
+    }
+
+    .slider {
+      position: relative;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .slider .slider-wrapper {
+      display: flex;
+      position: absolute;
+      height: 100%;
+      width: 150rem;
+      flex-direction: row;
+    }
+
+    .slider .slider-wrapper .slider-item {
+      height: 100%;
+      flex: 1;
+    }
+
+    .inner {
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+      font-size: 10rem;
+      color: rgb(206, 148, 72);
+    }
+
+    .slider-item:nth-child(1) {
+      background: pink;
+    }
+
+    .slider-item:nth-child(2) {
+      background: rgb(225, 255, 192);
+    }
+
+    .slider-item:nth-child(3) {
+      background: rgb(204, 192, 255);
+    }
+
+    .slider-item:nth-child(4) {
+      background: rgb(255, 192, 211);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="slider">
+      <div class="slider-wrapper">
+        <div class="slider-item">
+          <div class="inner">八月</div>
+        </div>
+        <div class="slider-item">
+          <div class="inner">存折</div>
+        </div>
+        <div class="slider-item">
+          <div class="inner">跳跳</div>
+        </div>
+        <div class="slider-item">
+          <div class="inner">乌龟</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    ;
+    ((document) => {
+      let oSlider = document.querySelector('.slider'),
+        oSliderWrapper = oSlider.querySelector('.slider-wrapper'),
+        oSliderItems = oSliderWrapper.querySelectorAll('.slider-item'),
+        pageWidth = oSlider.offsetWidth,
+        startX = 0,
+        moveX = 0,
+        pageIndeX = 0,
+        distanceX = 0,
+        isMove = false
+      const init = () => {
+        oSlider.addEventListener('touchstart', handleStart, false)
+        oSlider.addEventListener('touchmove', handleMove, false)
+        oSlider.addEventListener('touchend', handleEnd, false)
+      }
+
+      function handleStart(e) {
+        console.log(e);
+        startX = e.touches[0].clientX
+      }
+
+      function handleMove(e) {
+        moveX = e.touches[0].clientX
+        if ((moveX > startX && pageIndeX === 0) || (moveX < startX && pageIndeX === oSliderItems.length - 1)) {
+          return
+        }
+        distanceX = moveX - startX
+        setTranslateX(-pageWidth * pageIndeX + distanceX)
+        isMove = true
+      }
+
+      function handleEnd(e) {
+        if (isMove) {
+          if (Math.abs(distanceX) >= pageWidth / 3) {
+            if (distanceX > 0) {
+              pageIndeX--
+            }
+            if (distanceX < 0) {
+              pageIndeX++
+            }
+          }
+          setTranslateX(-pageWidth * pageIndeX)
+        }
+        startX = 0;
+        distanceX = 0;
+        isMove = false
+      }
+
+      function setTranslateX(translateX) {
+        oSlider.style.transition = 'all .1s'
+        oSlider.style.transform = `translateX(${translateX}px)`
+      }
+      init()
+    })(document)
+  </script>
+</body>
+
+</html>
